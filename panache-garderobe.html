@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garde-robe — Panache</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14120F;
+    --panel: #1C1A16;
+    --panel-raised: #262319;
+    --ink: #EDE6D8;
+    --ink-soft: #D2C6AE;
+    --gold: #C4A15C;
+    --gold-bright: #E3C687;
+    --muted: #877C67;
+    --rule: rgba(196,161,92,0.28);
+    --dim: #55503F;
+    --sage: #7E9C6E;
+    --amber: #C77D3E;
+    --radius: 10px;
+    --shadow: 0 14px 34px rgba(0,0,0,0.5);
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Work Sans', sans-serif;
+  }
+ 
+  *{ box-sizing: border-box; }
+ 
+  html,body{
+    margin:0;
+    padding:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+ 
+  body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem);
+  }
+ 
+  a{ color: inherit; }
+ 
+  .page{ width: 100%; max-width: 1120px; }
+ 
+  header.masthead{
+    text-align:center;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+  }
+ 
+  .kicker{
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin: 0 0 0.6rem;
+  }
+  .kicker a{
+    text-decoration: none;
+    border-bottom: 1px solid rgba(135,124,103,0.4);
+  }
+  .kicker a:hover{ color: var(--gold-bright); border-bottom-color: var(--gold-bright); }
+ 
+  h1{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.2rem, 5.2vw, 3.1rem);
+    margin: 0 0 0.9rem;
+    color: var(--ink);
+  }
+ 
+  .lede{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 52ch;
+    margin: 0 auto;
+    line-height: 1.55;
+  }
+ 
+  .stat-row{
+    display:flex;
+    justify-content:center;
+    gap: 1.6rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .stat-row .stat{ font-size: 0.85rem; color: var(--muted); }
+  .stat-row .stat b{ color: var(--gold-bright); font-weight: 600; }
+ 
+  .filters{
+    display:flex;
+    justify-content:center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.6rem;
+  }
+  .filters button{
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .filters button:hover{ color: var(--gold-bright); border-color: var(--gold); }
+  .filters button.active{ color: var(--bg); background: var(--gold-bright); border-color: var(--gold-bright); }
+ 
+  .group{ margin-top: 2.6rem; }
+  .group-head{
+    display:flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+  .group-head h2{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--gold-bright);
+  }
+  .group-head .count{ font-size: 0.78rem; color: var(--dim); }
+ 
+  .gallery{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 1rem;
+  }
+ 
+  .card{
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .card:hover{
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    border-color: rgba(227,198,135,0.55);
+  }
+  .card.wished{ opacity: 0.72; }
+ 
+  .card-cover{
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 2.4rem;
+    color: var(--dim);
+    background:
+      repeating-linear-gradient(135deg, var(--panel-raised), var(--panel-raised) 10px, var(--panel) 10px, var(--panel) 20px);
+  }
+  img.card-cover{ object-fit: cover; filter: sepia(6%) saturate(105%); }
+ 
+  .card-badge{
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border: 1px solid;
+    background: rgba(20,18,15,0.85);
+  }
+  .badge-ok{ color: var(--sage); border-color: var(--sage); }
+  .badge-warn{ color: var(--amber); border-color: var(--amber); }
+  .badge-wish{ color: var(--gold-bright); border-color: var(--gold); }
+  .badge-none{ color: var(--muted); border-color: var(--dim); }
+ 
+  .card-qty{
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    background: rgba(20,18,15,0.85);
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+  }
+ 
+  .card-body{ padding: 0.75rem 0.9rem 0.9rem; }
+ 
+  .card-tag{
+    font-size: 0.63rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin: 0 0 0.2rem;
+  }
+ 
+  .card-title{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin: 0 0 0.2rem;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+ 
+  .card-sub{
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--muted);
+    margin: 0;
+  }
+ 
+  /* --- Modal --- */
+  .overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.78);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    z-index: 999;
+  }
+  .overlay.open{ display: flex; }
+ 
+  .modal{
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    max-height: 86vh;
+    overflow-y: auto;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+ 
+  .modal-close{
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.4);
+    color: var(--ink);
+    border: none;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+    z-index: 2;
+  }
+  .modal-close:hover{ background: var(--gold-bright); color: var(--bg); }
+ 
+  .modal-cover{
+    height: 200px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 3.4rem;
+    color: var(--dim);
+    background:
+      repeating-linear-gradient(135deg, var(--panel-raised), var(--panel-raised) 12px, var(--panel) 12px, var(--panel) 24px);
+  }
+  img.modal-cover{ width:100%; height:280px; object-fit:cover; filter: sepia(6%) saturate(105%); }
+ 
+  .modal-body{ padding: 1.6rem 1.8rem 2rem; }
+ 
+  .modal-breadcrumb{
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin: 0 0 0.5rem;
+  }
+ 
+  .modal-title{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.6rem;
+    margin: 0 0 0.5rem;
+    color: var(--ink);
+  }
+ 
+  .modal-badge{
+    display:inline-block;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border: 1px solid;
+    margin: 0 0 0.9rem;
+  }
+ 
+  .modal-specs{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 1rem;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.1rem;
+  }
+  .modal-specs dt{ color: var(--muted); }
+  .modal-specs dd{ margin: 0; }
+ 
+  .modal-price{
+    font-size: 1.2rem;
+    color: var(--gold-bright);
+    margin: 0 0 1rem;
+  }
+ 
+  .modal-comment{
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 0;
+    padding-top: 0.9rem;
+    border-top: 1px dashed var(--rule);
+    white-space: pre-line;
+  }
+ 
+  .modal-link{
+    display: inline-block;
+    margin-top: 0.9rem;
+    font-size: 0.85rem;
+    color: var(--gold-bright);
+    border-bottom: 1px solid transparent;
+  }
+  .modal-link:hover{ border-color: var(--gold-bright); }
+ 
+  footer.colophon{
+    margin-top: 3rem;
+    text-align:center;
+    font-size: 0.78rem;
+    color: var(--dim);
+  }
+</style>
+</head>
+<body>
+ 
+<div class="page">
+  <header class="masthead">
+    <p class="kicker"><a href="panache.html">Panache</a> — garde-robe, style et pièces choisies</p>
+    <h1>Garde-robe</h1>
+    <p class="lede">Toutes les pièces, rangées par catégorie. Touchez une fiche pour l'ouvrir.</p>
+    <div class="stat-row">
+      <span class="stat"><b id="stat-total"></b> pièces possédées</span>
+      <span class="stat"><b id="stat-wish"></b> souhaitées</span>
+      <span class="stat"><b id="stat-value"></b> de valeur connue</span>
+    </div>
+  </header>
+ 
+  <div id="gallery-root"></div>
+ 
+  <footer class="colophon">Une facette de l'Atlas des facettes.</footer>
+</div>
+ 
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close" aria-label="Fermer">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+ 
+<script>
+  const ITEMS = [{"id": "11101-1111-006", "categorie": "Haut", "sousCategorie": "T-shirt", "piece": "T-shirt noir", "marque": "Uniqlo", "couleur": "Noir", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "11101-1151-006", "categorie": "Haut", "sousCategorie": "T-shirt", "piece": "T-shirt taillé noir à motif bleu Hokusai", "marque": "Uniqlo", "couleur": "Bleu / Noir", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "11101-1151-023", "categorie": "Haut", "sousCategorie": "T-shirt", "piece": "T-shirt rec noir - Melody - Yoko", "marque": "Yoko", "couleur": "Noir / Orange", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "Col serré, coupe légèrement large, belle matière et graph original et coloré à l'arrière.", "quantite": 1}, {"id": "11101-1211-006", "categorie": "Haut", "sousCategorie": "T-shirt", "piece": "T-shirt blanc", "marque": "Uniqlo", "couleur": "Blanc", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 2}, {"id": "11101-1251-023", "categorie": "Haut", "sousCategorie": "T-shirt", "piece": "T-shirt taillé blanc à motif", "marque": "Yoko", "couleur": "Blanc", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "https://web.archive.org/web/20220630123831/https://yokoshop.com/collections/all/products/t-shirt-yoko-ecru?variant=33138958532713", "commentaire": "", "quantite": 1}, {"id": "11101-1651-006", "categorie": "Haut", "sousCategorie": "T-shirt", "piece": "T-shirt taillé gris à motif bleu Hokusai", "marque": "Uniqlo", "couleur": "Bleu / Gris", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "11101-5111-006", "categorie": "Haut", "sousCategorie": "T-shirt", "piece": "T-shirt rose", "marque": "Uniqlo", "couleur": "Rose", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "11403-3111-006", "categorie": "Haut", "sousCategorie": "T-shirt", "piece": "T-shirt manche longue en maille fine beige", "marque": "Uniqlo", "couleur": "Beige", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "12201-1212-001", "categorie": "Haut", "sousCategorie": "Polo", "piece": "Polo blanc", "marque": "Lacoste", "couleur": "Blanc", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "12201-2612-003", "categorie": "Haut", "sousCategorie": "Polo", "piece": "Polo bleu foncé", "marque": "Burton", "couleur": "Bleu", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "12203-3511-010", "categorie": "Haut", "sousCategorie": "Polo", "piece": "Polo terre marron brodé", "marque": "Monoprix", "couleur": "Marron", "statut": "Neuf", "taille": "S", "prix": 35.99, "date": "30 juin 2025", "image": "", "commentaire": "", "quantite": 1}, {"id": "13301-1211-003", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise blanche", "marque": "Burton", "couleur": "Blanc", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "13301-1211-013", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise blanche", "marque": "Galeries Lafayette", "couleur": "Blanc", "statut": "Correct", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "13301-1543-005", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise blanche imprimée motifs bleus - Col français - BERANGER - Blanc et Bleu - Bexley", "marque": "Bexley", "couleur": "Blanc / Gris", "statut": "Très bon", "taille": "37", "prix": 39.67, "date": "9 septembre 2025", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/1/0122705i-beranger_blanc_et_bleu_1.jpg", "commentaire": "", "quantite": 1}, {"id": "13301-2326-999", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise en coton rayée bleu et blanc", "marque": "TM Lewin", "couleur": "Blanc / Bleu", "statut": "Correct", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "13301-2342-005", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise homme bleu clair en twill effet chiné - SYLVENIAS - Blanc Et Bleu Clair - Bexley", "marque": "Bexley", "couleur": "Blanc / Bleu", "statut": "Très bon", "taille": "37", "prix": 39.67, "date": "9 septembre 2025", "image": "", "commentaire": "", "quantite": 1}, {"id": "13301-2811-003", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise bleu clair", "marque": "Burton", "couleur": "Bleu", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "13301-5111-005", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise Rose pâle coton - Col français - LOUIS CLASSIC - Bexley", "marque": "Bexley", "couleur": "Rose", "statut": "Très bon", "taille": "37", "prix": 64.0, "date": "9 septembre 2025", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/0/0074502a-louis_classic_rose_pale_4_bis.jpg", "commentaire": "", "quantite": 1}, {"id": "13303-1211-003-a", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise blanche texturée", "marque": "Burton", "couleur": "Blanc", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "13303-1211-003-b", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise blanche texturée", "marque": "Burton", "couleur": "Blanc", "statut": "À réparer", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "13401-1211-021", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise blanche cache-bouton", "marque": "Fursac", "couleur": "Blanc", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "13505-2171-006", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise 100% lin premium (Col officier) - 61 Bleu - Uniqlo", "marque": "Uniqlo", "couleur": "Bleu", "statut": "Très bon", "taille": "S", "prix": 49.9, "date": "", "image": "https://image.uniqlo.com/UQ/ST3/WesternCommon/imagesgoods/468756/item/goods_61_468756_3x4.jpg", "commentaire": "", "quantite": 1}, {"id": "13701-2533-016", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise oxford à carreaux bleu roi et blanc", "marque": "Tommy Hilfiger", "couleur": "Blanc / Bleu", "statut": "Très bon", "taille": "S", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "13703-4222-022", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise rayée vert", "marque": "AMI Paris", "couleur": "Blanc / Vert", "statut": "Très bon", "taille": "S", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "13705-2326-016", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise en lin rayée bleu et blanc", "marque": "Tommy Hilfiger", "couleur": "Blanc / Bleu", "statut": "Très bon", "taille": "XS", "prix": 119.9, "date": "", "image": "https://static.galerieslafayette.com/cdn-cgi/image/width=2200,height=2400,quality=85,format=auto,fit=pad,background=white/media/images/hp_mod_120/hp_mod_120695242/hp_modvar_120696320/202412061543/linen_essent_stripe_rf_shirtblanc_bleu6large-2.jpg", "commentaire": "", "quantite": 1}, {"id": "13705-4111-010", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise en lin vert clair", "marque": "Monoprix", "couleur": "Vert", "statut": "Très bon", "taille": "S", "prix": null, "date": "22 juin 2025", "image": "", "commentaire": "", "quantite": 1}, {"id": "13705-5111-004", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise en lin rose", "marque": "Devred", "couleur": "Rose", "statut": "Très bon", "taille": "S", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "13708-5533-999", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise oxford bordeaux à carreaux", "marque": "", "couleur": "Rouge", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "14303-1311-058", "categorie": "Haut", "sousCategorie": "Chemise", "piece": "Chemise en maille Maric - Ecru/Bleu", "marque": "Octobre éditions", "couleur": "Blanc", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "https://www.octobre-editions.com/fr-fr/product/chemise-maille-maric/ecru-bleu#size-S", "commentaire": "", "quantite": 1}, {"id": "15101-1221-006", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull marinière col rond", "marque": "Uniqlo", "couleur": "Blanc / Noir", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "15101-3511-017", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull col rond marron", "marque": "C&A", "couleur": "Marron", "statut": "Correct", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "15112-2612-016", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull col rond en cachemire marine", "marque": "Tommy Hilfiger", "couleur": "Bleu", "statut": "Correct", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "15133-2612-002", "categorie": "Haut", "sousCategorie": "Polo", "piece": "Pull droit maille câble coton - Bleu nuit - Polo Ralph Lauren", "marque": "Polo Ralph Lauren", "couleur": "Bleu", "statut": "Très bon", "taille": "", "prix": 215.0, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "15303-1311-010", "categorie": "Haut", "sousCategorie": "Polo", "piece": "Pull col polo texturé écru", "marque": "Monoprix", "couleur": "Blanc", "statut": "Neuf", "taille": "S", "prix": 26.99, "date": "18 mai 2026", "image": "https://media.monoprix.fr/assets/images/fashion/3614914949156/3/1900x1900.jpg?id=69b33c47d11841167394ac28&twic=v1/resize=750", "commentaire": "", "quantite": 1}, {"id": "15401-2611-010", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull col camionneur bleu foncé", "marque": "Monoprix", "couleur": "Bleu", "statut": "Très bon", "taille": "S", "prix": 26.99, "date": "18 mai 2026", "image": "https://media.monoprix.fr/assets/images/fashion/3614913533172/2/1900x1900.jpg?id=696183e8515256f18012571c&twic=v1/resize=750", "commentaire": "", "quantite": 1}, {"id": "15401-4711-010", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull col camionneur vert foncé", "marque": "Monoprix", "couleur": "Vert", "statut": "Très bon", "taille": "S", "prix": null, "date": "", "image": "https://media.monoprix.fr/assets/images/fashion/3614914237635/2/1900x1900.jpg?id=67aa7baba8a34b1f62b5c297&twic=v1/resize=750", "commentaire": "", "quantite": 1}, {"id": "15508-1311-006", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull col roulé épais écru", "marque": "Uniqlo", "couleur": "Blanc", "statut": "Correct", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "15508-2611-007", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull col roulé fin marine", "marque": "Zara", "couleur": "Bleu", "statut": "Correct", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "15508-3212-001", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull col roulé fin marron clair", "marque": "Lacoste", "couleur": "Marron", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "16201-1154-023", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull sweat noir et jaune Tengu", "marque": "Yoko", "couleur": "Jaune / Noir", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "16201-1154-999", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull sweat noir Corpocabana", "marque": "", "couleur": "Noir", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "16201-2154-999", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull sweat bleu clair ECS*", "marque": "", "couleur": "Bleu", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "16201-2654-023", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull sweat bleu marine Kamikiri", "marque": "Yoko", "couleur": "Bleu", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "16201-4512-024", "categorie": "Haut", "sousCategorie": "Pull", "piece": "Pull sweat vert", "marque": "Element", "couleur": "Vert", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "21108-2611-003", "categorie": "Haut", "sousCategorie": "Veste de costume", "piece": "Veste de costume ajustée bleu marine", "marque": "Burton", "couleur": "Bleu", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "21108-2611-005", "categorie": "Haut", "sousCategorie": "Veste de costume", "piece": "Veste de costume ajustée bleu marine", "marque": "Bexley", "couleur": "Bleu", "statut": "Très bon", "taille": "", "prix": 190.0, "date": "19 janvier 2026", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/0/0095801s-vestelazare_bleu_chine_1_1_bis.jpg", "commentaire": "", "quantite": 1}, {"id": "21108-2633-017", "categorie": "Haut", "sousCategorie": "Veste de costume", "piece": "Veste de costume bleu marine à carreaux", "marque": "C&A", "couleur": "Bleu", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "22301-1311-010", "categorie": "Veste & Manteau", "sousCategorie": "Veste de travail", "piece": "Veste de travail écru", "marque": "Monoprix", "couleur": "Blanc", "statut": "Très bon", "taille": "S", "prix": 23.99, "date": "16 juillet 2025", "image": "", "commentaire": "", "quantite": 1}, {"id": "22301-3111-058", "categorie": "Veste & Manteau", "sousCategorie": "Veste", "piece": "Veste Nelson - Beige", "marque": "Octobre éditions", "couleur": "Gris", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "https://www.octobre-editions.com/fr-fr/product/veste-nelson/beige#size-M", "commentaire": "", "quantite": 1}, {"id": "22599-2611-999", "categorie": "Veste & Manteau", "sousCategorie": "Bomber", "piece": "Bomber marine", "marque": "", "couleur": "Bleu", "statut": "Hors d'usage", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "22608-1111-012", "categorie": "Veste & Manteau", "sousCategorie": "Blouson", "piece": "Blouson noir", "marque": "Springfield", "couleur": "Noir", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "23108-1632-003", "categorie": "Veste & Manteau", "sousCategorie": "Manteau", "piece": "Manteau gris", "marque": "Burton", "couleur": "Gris", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "24220-4611-01801", "categorie": "Veste & Manteau", "sousCategorie": "Doudoune", "piece": "Doudoune verte", "marque": "Forclaz", "couleur": "Vert", "statut": "Très bon", "taille": "S", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "24320-1111-006", "categorie": "Veste & Manteau", "sousCategorie": "Doudoune", "piece": "Doudoune légère sans manche noire", "marque": "Uniqlo", "couleur": "Noir", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "31108-2611-005", "categorie": "Bas", "sousCategorie": "Pantalon de costume", "piece": "Pantalon de costume ajusté bleu marine", "marque": "Bexley", "couleur": "Bleu", "statut": "Très bon", "taille": "", "prix": 99.0, "date": "19 janvier 2026", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/0/0095703j-pantalon-lazare-bleu-franc_1_ter.jpg", "commentaire": "", "quantite": 1}, {"id": "31108-2633-017", "categorie": "Bas", "sousCategorie": "Pantalon de costume", "piece": "Pantalon de costume bleu marine à carreaux", "marque": "C&A", "couleur": "Bleu", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "31305-3126-058", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon Melor - Beige à rayure marine", "marque": "Octobre éditions", "couleur": "Beige", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "https://www.octobre-editions.com/fr-fr/product/pantalon-melor/beige-rayure-marine#size-S", "commentaire": "", "quantite": 1}, {"id": "32101-1511-004", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon chino gris", "marque": "Devred", "couleur": "Gris", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "32101-3511-004", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon chino marron", "marque": "Devred", "couleur": "Marron", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "32101-3571-010", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon large brun clair", "marque": "Monoprix", "couleur": "Marron", "statut": "Neuf", "taille": "38", "prix": 12.8, "date": "16 juillet 2025", "image": "", "commentaire": "", "quantite": 1}, {"id": "32101-4511-010", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon en coton vert", "marque": "Monoprix", "couleur": "Vert", "statut": "Très bon", "taille": "38", "prix": 14.72, "date": "16 juillet 2025", "image": "", "commentaire": "", "quantite": 1}, {"id": "32101-5511-004", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon chino bordeaux", "marque": "Devred", "couleur": "Rouge", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "32101-6411-058", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon Floris - Moutarde", "marque": "Octobre éditions", "couleur": "Jaune", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "https://www.octobre-editions.com/fr-fr/product/pantalon-floris/moutarde#size-S", "commentaire": "", "quantite": 1}, {"id": "32105-1211-010", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon en lin blanc", "marque": "Monoprix", "couleur": "Blanc", "statut": "Très bon", "taille": "38", "prix": 47.5, "date": "22 juin 2025", "image": "https://media.monoprix.fr/assets/images/fashion/3614915081497/2/1900x1900.jpg?id=69c7077fbc4f77ae984fc908&twic=v1/resize=750", "commentaire": "", "quantite": 1}, {"id": "32105-3711-01002", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon en lin brun foncé", "marque": "Monoprix", "couleur": "Marron", "statut": "Neuf", "taille": "38", "prix": 31.49, "date": "18 mai 2026", "image": "https://media.monoprix.fr/assets/images/fashion/3614914920926/2/1900x1900.jpg?id=69c70769bc4f77ae984fbf92&twic=v1/resize=750", "commentaire": "", "quantite": 1}, {"id": "32130-1211-016", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon en velours blanc", "marque": "Tommy Hilfiger", "couleur": "Blanc", "statut": "Correct", "taille": "", "prix": null, "date": "", "image": "https://gomez.fr/upload/product/987/th245m000282h233334-4.jpg", "commentaire": "", "quantite": 1}, {"id": "33101-3111-01801", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon cargo beige", "marque": "Forclaz", "couleur": "Beige", "statut": "Non renseigné", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "33101-4511-01801", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon cargo vert kaki", "marque": "Forclaz", "couleur": "Vert", "statut": "Non renseigné", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "33201-2611-010", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon fatigue pants en coton bleu foncé", "marque": "Monoprix", "couleur": "Bleu", "statut": "Neuf", "taille": "38", "prix": 20.69, "date": "18 mai 2026", "image": "https://media.monoprix.fr/assets/images/fashion/3614914895606/2/1900x1900.jpg?id=69618400515256f18012617f&twic=v1/resize=750", "commentaire": "Joli pantalon casual avec une belle coupe, facile à porter, peut remplacer le jean dans le classique du vestiaire masculin.", "quantite": 1}, {"id": "34107-2614-010", "categorie": "Bas", "sousCategorie": "Pantalon", "piece": "Pantalon jean brut", "marque": "Monoprix", "couleur": "Bleu", "statut": "Neuf", "taille": "38", "prix": null, "date": "16 juillet 2025", "image": "", "commentaire": "", "quantite": 1}, {"id": "36101-2311-004", "categorie": "Bas", "sousCategorie": "Short", "piece": "Short en coton bleu", "marque": "Devred", "couleur": "Bleu", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "36101-5411-004", "categorie": "Bas", "sousCategorie": "Short", "piece": "Short en coton rouge", "marque": "Devred", "couleur": "Rouge", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "36205-3511-010", "categorie": "Bas", "sousCategorie": "Short", "piece": "Short en lin à cordon marron", "marque": "Monoprix", "couleur": "Marron", "statut": "Neuf", "taille": "38", "prix": null, "date": "22 juin 2025", "image": "", "commentaire": "", "quantite": 1}, {"id": "36205-6411-013", "categorie": "Bas", "sousCategorie": "Short", "piece": "Short en lin ocre", "marque": "Galeries Lafayette", "couleur": "Jaune", "statut": "Très bon", "taille": "S", "prix": 55.0, "date": "", "image": "https://static.galerieslafayette.com/cdn-cgi/image/width=2200,height=2400,quality=85,format=auto,fit=pad,background=white/media/images/hp_mod_128/hp_mod_128986201/hp_modvar_128986366/202603021117/bermuda_suberlin_en_lin-2.jpg", "commentaire": "", "quantite": 1}, {"id": "36520-4126-010", "categorie": "Bas", "sousCategorie": "Short", "piece": "Short de bain rayé blanc et vert", "marque": "Monoprix", "couleur": "Blanc / Vert", "statut": "Non renseigné", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "41115-3311-003", "categorie": "Chaussures", "sousCategorie": "Richelieu", "piece": "Richelieu en cuir cognac", "marque": "Burton", "couleur": "Marron", "statut": "Bon", "taille": "41", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "41216-3311-005", "categorie": "Chaussures", "sousCategorie": "Derbies", "piece": "Derbies en cuir perforé cognac", "marque": "Bexley", "couleur": "Marron", "statut": "Neuf", "taille": "42", "prix": 149.0, "date": "24 juin 2025", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/1/0180705a-grackott_patin_cognac_patine_2_bis.jpg", "commentaire": "", "quantite": 1}, {"id": "42417-2311-005", "categorie": "Chaussures", "sousCategorie": "Mocassins", "piece": "Mocassins à picots en cuir daim bleu", "marque": "Bexley", "couleur": "Bleu", "statut": "Très bon", "taille": "43", "prix": 109.0, "date": "20 mars 2023", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/0/0056705t-ferguson_velours_bleu_indigo_2_bis.jpg", "commentaire": "", "quantite": 1}, {"id": "42417-3111-004", "categorie": "Chaussures", "sousCategorie": "Mocassins", "piece": "Mocassins à picots en cuir daim beige", "marque": "Devred", "couleur": "Beige", "statut": "Bon", "taille": "43", "prix": null, "date": "", "image": "https://devred.com/cdn/shop/files/5601064_01.jpg?v=1773227978&width=600", "commentaire": "", "quantite": 1}, {"id": "42417-4411-005", "categorie": "Chaussures", "sousCategorie": "Mocassins", "piece": "Mocassins à picots en cuir daim vert", "marque": "Bexley", "couleur": "Vert", "statut": "Très bon", "taille": "43", "prix": 109.0, "date": "20 mars 2023", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/0/00567080-ferguson_nubuck_kaki_2.jpg", "commentaire": "", "quantite": 1}, {"id": "43115-1111-005", "categorie": "Chaussures", "sousCategorie": "Chelsea boots", "piece": "Chelsea boots en cuir noir", "marque": "Bexley", "couleur": "Noir", "statut": "Correct", "taille": "42", "prix": 169.0, "date": "24 novembre 2022", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/1/0102700k-dawsoniipatin_noir_1.jpg", "commentaire": "", "quantite": 1}, {"id": "43217-3211-999", "categorie": "Chaussures", "sousCategorie": "Chukka", "piece": "Chukka en daim marron", "marque": "", "couleur": "Marron", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "44101-1311-057", "categorie": "Chaussures", "sousCategorie": "Sneakers", "piece": "Converse Chuck 70 Vintage Canvas (Natural / Ecru)", "marque": "Converse", "couleur": "Blanc", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "44101-3511-057", "categorie": "Chaussures", "sousCategorie": "Sneakers", "piece": "Converse Chuck Taylor All Star Classic (Unearthed Brown / Marron)", "marque": "Converse", "couleur": "Marron", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "44115-1211-005", "categorie": "Chaussures", "sousCategorie": "Sneakers", "piece": "Sneakers en cuir blanc", "marque": "Bexley", "couleur": "Blanc", "statut": "Neuf", "taille": "42", "prix": 109.0, "date": "24 juin 2025", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/0/00896002-inglewood_blanc_2_bis.jpg", "commentaire": "", "quantite": 1}, {"id": "44117-3111-005", "categorie": "Chaussures", "sousCategorie": "Sneakers", "piece": "Sneakers en cuir daim beige", "marque": "Bexley", "couleur": "Beige", "statut": "Hors d'usage", "taille": "42", "prix": 109.0, "date": "30 mars 2023", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/0/00896085-inglewood_velours_beige_fonce_ii_2.jpg", "commentaire": "", "quantite": 1}, {"id": "44201-2611-039", "categorie": "Chaussures", "sousCategorie": "Sneakers", "piece": "Vans Authentic Suede (Navy / Bleu Marine)", "marque": "Vans", "couleur": "Bleu", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "44201-3511-039", "categorie": "Chaussures", "sousCategorie": "Sneakers", "piece": "Vans Premium Authentic 44 (Duck Canvas - Cumin Brun)", "marque": "Vans", "couleur": "Marron", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "44401-1511-057", "categorie": "Chaussures", "sousCategorie": "Sneakers", "piece": "Converse Chuck Taylor Throwback (Classic Grey / Gris-Blanc)", "marque": "Converse", "couleur": "Gris", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "44401-2611-057", "categorie": "Chaussures", "sousCategorie": "Sneakers", "piece": "Converse Chuck Tailor Throwback (Navy/Navy-White-Red)", "marque": "Converse", "couleur": "Bleu", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "44501-1611-039", "categorie": "Chaussures", "sousCategorie": "Sneakers", "piece": "Vans Classic Slip-On (Charcoal / Gris Anthracite)", "marque": "Vans", "couleur": "Gris", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "45117-3311-01002", "categorie": "Chaussures", "sousCategorie": "Espadrilles", "piece": "Espadrilles en cuir BEIGE - Monoprix Premium", "marque": "Monoprix", "couleur": "Marron", "statut": "Bon", "taille": "43", "prix": 49.9, "date": "26 mai 2025", "image": "https://cdn.monoprix.fr/cdn-cgi/image/width=307/https://cdn.monoprix.fr/assets/images/fashion/3614913598959/0/1900x1900.jpg", "commentaire": "", "quantite": 1}, {"id": "45117-3411-058", "categorie": "Chaussures", "sousCategorie": "Espadrilles", "piece": "Espadrilles Alan - Camel", "marque": "Octobre éditions", "couleur": "Orange", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "https://www.octobre-editions.com/fr-fr/product/espadrilles-alan/camel#size-43", "commentaire": "", "quantite": 1}, {"id": "52102-1111-010", "categorie": "Sous-vêtement", "sousCategorie": "Chaussettes", "piece": "Chaussettes noire en fil d'Ecosse", "marque": "Monoprix", "couleur": "Noir", "statut": "Très bon", "taille": "43/45", "prix": null, "date": "30 juin 2025", "image": "", "commentaire": "", "quantite": 2}, {"id": "52102-2311-010", "categorie": "Sous-vêtement", "sousCategorie": "Chaussettes", "piece": "Chaussettes bleu en fil d'Ecosse", "marque": "Monoprix", "couleur": "Bleu", "statut": "Très bon", "taille": "43/45", "prix": null, "date": "30 juin 2025", "image": "", "commentaire": "", "quantite": 2}, {"id": "52102-2611-011", "categorie": "Sous-vêtement", "sousCategorie": "Chaussettes", "piece": "Chaussettes Bleu marine - Super-solide fil d'Ecosse - Mazarin", "marque": "Mazarin", "couleur": "Bleu", "statut": "Très bon", "taille": "42/43", "prix": 23.0, "date": "24 décembre 2025", "image": "https://meschaussettesrouges.com/cdn/shop/files/PS-MM-SSFE-MARINE-1_740x.png?v=1757433066", "commentaire": "", "quantite": 1}, {"id": "52102-3111-005", "categorie": "Sous-vêtement", "sousCategorie": "Chaussettes", "piece": "Chaussettes ville homme fil d'Ecosse Beige - Bexley", "marque": "Bexley", "couleur": "Beige", "statut": "Très bon", "taille": "43/44", "prix": 8.0, "date": "1 avril 2026", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/5/059003-chaussettesfilsdecosseaveccotes_beige_2.jpg", "commentaire": "", "quantite": 1}, {"id": "52102-3511-011", "categorie": "Sous-vêtement", "sousCategorie": "Chaussettes", "piece": "Chaussettes Marron - Super-solide fil d'Ecosse - Mazarin", "marque": "Mazarin", "couleur": "Marron", "statut": "Très bon", "taille": "42/43", "prix": 23.0, "date": "24 décembre 2025", "image": "https://meschaussettesrouges.com/cdn/shop/files/PS-MM-SSFE-MARRON-1_740x.jpg?v=1769609553", "commentaire": "", "quantite": 1}, {"id": "52102-4811-011", "categorie": "Sous-vêtement", "sousCategorie": "Chaussettes", "piece": "Chaussettes Vert académie - Super-solide fil d'Ecosse - Mazarin", "marque": "Mazarin", "couleur": "Vert", "statut": "Très bon", "taille": "42/43", "prix": 23.0, "date": "24 décembre 2024", "image": "https://meschaussettesrouges.com/cdn/shop/files/PS-MM-SSFE-ACADEMIE-1_740x.jpg?v=1764155701", "commentaire": "", "quantite": 1}, {"id": "52102-5511-010", "categorie": "Sous-vêtement", "sousCategorie": "Chaussettes", "piece": "Chaussettes rouge bordeaux en fil d'Ecosse", "marque": "Monoprix", "couleur": "Rouge", "statut": "Très bon", "taille": "43/45", "prix": null, "date": "30 juin 2025", "image": "", "commentaire": "", "quantite": 2}, {"id": "61108-1511-013", "categorie": "Accessoire", "sousCategorie": "Écharpe", "piece": "Echarpe rouge et gris", "marque": "Galeries Lafayette", "couleur": "Gris / Rouge", "statut": "Correct", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "61108-2611-003", "categorie": "Accessoire", "sousCategorie": "Écharpe", "piece": "Echarpe bleue", "marque": "Burton", "couleur": "Bleu", "statut": "Correct", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "61108-3211-013", "categorie": "Accessoire", "sousCategorie": "Écharpe", "piece": "Echarpe marron clair", "marque": "Galeries Lafayette", "couleur": "Marron", "statut": "Correct", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "61306-1311-005", "categorie": "Accessoire", "sousCategorie": "Cravate", "piece": "Cravate en Chambray Ecru Coton et Lin - Bexley", "marque": "Bexley", "couleur": "Blanc", "statut": "Très bon", "taille": "", "prix": 26.5, "date": "1 avril 2026", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/1/019220ct-cravate-coton_lin_chambray_ecru_1.jpg", "commentaire": "", "quantite": 1}, {"id": "61331-2141-003", "categorie": "Accessoire", "sousCategorie": "Cravate", "piece": "Cravate en soie bleu clair à motif", "marque": "Burton", "couleur": "Bleu", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "61331-5441-017", "categorie": "Accessoire", "sousCategorie": "Cravate", "piece": "Cravate en soie rouge", "marque": "", "couleur": "Rouge", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "61331-5927-999", "categorie": "Accessoire", "sousCategorie": "Cravate", "piece": "Cravate rayée en soie aubergine", "marque": "", "couleur": "Violet", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "61333-4711-999", "categorie": "Accessoire", "sousCategorie": "Cravate", "piece": "Cravate tricotée verte", "marque": "", "couleur": "Vert", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "62108-4711-01803", "categorie": "Accessoire", "sousCategorie": "Bonnet", "piece": "Bonnet vert foncé", "marque": "Solognac", "couleur": "Vert", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "62108-4714-059", "categorie": "Accessoire", "sousCategorie": "Bonnet", "piece": "Bonnet Mackie Ardara Donegal - Swilly", "marque": "Mackie", "couleur": "Beige", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "https://flaneurs.net/fr/bonnets/7521-mackie-ardara-donegal-hat-swilly-2086283275944.html", "commentaire": "", "quantite": 1}, {"id": "62108-6714-059", "categorie": "Accessoire", "sousCategorie": "Bonnet", "piece": "Bonnet Mackie Ardara Donegal - Sunset", "marque": "Mackie", "couleur": "Orange", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "https://flaneurs.net/fr/bonnets/8812-mackie-ardara-donegal-hat-sunset-2020882782984.html", "commentaire": "", "quantite": 1}, {"id": "62201-2112-999", "categorie": "Accessoire", "sousCategorie": "Casquette", "piece": "Casquette bleu clair JO Paris 2024", "marque": "", "couleur": "Bleu", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "63115-1111-013", "categorie": "Accessoire", "sousCategorie": "Ceinture", "piece": "Ceinture large en cuir noir", "marque": "", "couleur": "Noir", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "63115-3311-003", "categorie": "Accessoire", "sousCategorie": "Ceinture", "piece": "Ceinture large en cuir cognac", "marque": "Burton", "couleur": "Marron", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "63215-3711-004", "categorie": "Accessoire", "sousCategorie": "Ceinture", "piece": "Ceinture fine en cuir marron", "marque": "Devred", "couleur": "Marron", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "63301-4611-01801", "categorie": "Accessoire", "sousCategorie": "Pantalon", "piece": "Ceinture de pantalon de rando vert", "marque": "Forclaz", "couleur": "Vert", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "63317-3411-058", "categorie": "Accessoire", "sousCategorie": "Ceinture", "piece": "Ceinture Finch - Camel", "marque": "Octobre éditions", "couleur": "Marron", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "https://www.octobre-editions.com/fr-fr/product/ceinture-finch/camel#size-85", "commentaire": "", "quantite": 1}, {"id": "63341-1311-058", "categorie": "Accessoire", "sousCategorie": "Ceinture", "piece": "Ceinture Come - Naturel", "marque": "Octobre éditions", "couleur": "Blanc", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "https://www.octobre-editions.com/fr-fr/product/ceinture-come/naturel#size-85", "commentaire": "", "quantite": 1}, {"id": "63432-3711-004", "categorie": "Accessoire", "sousCategorie": "Ceinture", "piece": "Ceinture fine enlacée en cuir marron", "marque": "Devred", "couleur": "Marron", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "64119-4511-006", "categorie": "Accessoire", "sousCategorie": "Sac", "piece": "Sac banane bandoulière vert", "marque": "Uniqlo", "couleur": "Vert", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "64515-1111-999", "categorie": "Accessoire", "sousCategorie": "Sac", "piece": "Sac de travail noir", "marque": "", "couleur": "Noir", "statut": "Correct", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "64701-1311-058", "categorie": "Accessoire", "sousCategorie": "Sac", "piece": "Cabas Fred - Ecru", "marque": "Octobre éditions", "couleur": "Blanc", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "https://www.octobre-editions.com/fr-fr/product/cabas-fred/ecru#size-TU", "commentaire": "", "quantite": 1}, {"id": "64815-3314-028", "categorie": "Accessoire", "sousCategorie": "Portefeuille", "piece": "Portefeuille en cuir cognac", "marque": "Texier", "couleur": "Marron", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "64915-1114-999", "categorie": "Accessoire", "sousCategorie": "Porte-cartes", "piece": "Porte-cartes en cuir noir", "marque": "", "couleur": "Noir", "statut": "Usé", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "65127-1711-015", "categorie": "Accessoire", "sousCategorie": "Bracelet", "piece": "Bracelet Rose des Vents - Tramontane - Vert kaki moucheté blanc et rouge - Le Vent à la Française", "marque": "Le Vent à la Française", "couleur": "Bronze / Vert", "statut": "À réparer", "taille": "", "prix": 29.0, "date": "18 mars 2023", "image": "https://leventalafrancaise.com/cdn/shop/files/TRAMONTANE-PACKSHOT_900x900_crop_center.png?v=1711384395", "commentaire": "", "quantite": 1}, {"id": "65127-1941-015", "categorie": "Accessoire", "sousCategorie": "Bracelet", "piece": "Bracelet Maillon - Hune - Beige et blanc marinière - Le Vent à la Française", "marque": "Le Vent à la Française", "couleur": "Argent / Beige", "statut": "Bon", "taille": "", "prix": 39.0, "date": "18 mars 2023", "image": "https://leventalafrancaise.com/cdn/shop/files/HUNE_PACKSHOT_900x900_crop_center.png?v=1708683723", "commentaire": "", "quantite": 1}, {"id": "65226-1811-999", "categorie": "Accessoire", "sousCategorie": "Collier", "piece": "Collier médaillon de baptême en or - Saint-Luc", "marque": "", "couleur": "Or", "statut": "Non renseigné", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "65725-3551-019", "categorie": "Accessoire", "sousCategorie": "Boutons de manchette", "piece": "Boutons de manchette", "marque": "Une autre paire de manche", "couleur": "Marron", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "66125-1715-014", "categorie": "Accessoire", "sousCategorie": "Montre", "piece": "Montre Lip Himalaya Squelette", "marque": "Lip", "couleur": "Marron", "statut": "Bon", "taille": "", "prix": 429.0, "date": "", "image": "https://lip.fr/396-large_default/lip-himalaya-40-squelette-671557.jpg", "commentaire": "Montre automatique squelette, permettant de voir les mécanismes. Héritage de l'alpinisme français, c'est une pièce à porter pour ouvrir à la discussion.", "quantite": 1}, {"id": "66137-1111-056", "categorie": "Accessoire", "sousCategorie": "Montre", "piece": "Montre Akrone C-03 édition limitée Alat, avec bague GMT", "marque": "Akrone", "couleur": "Argent / Noir", "statut": "Très bon", "taille": "", "prix": 490.0, "date": "4 juin 2026", "image": "https://lepetitpoussoir.fr/wp-content/uploads/2021/03/montre-akrone-alat-11.jpg", "commentaire": "Très belle montre automatique en titane avec cadre noir superposé. Montre sobre de type aviateur, rappelant un style militaire, surtout avec un bracelet noir ou kaki.", "quantite": 1}, {"id": "66415-3311-014", "categorie": "Accessoire", "sousCategorie": "Bracelet de montre", "piece": "Bracelet de montre en cuir patiné brun - Lip", "marque": "Lip", "couleur": "Marron", "statut": "Usé", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "66417-3414-062", "categorie": "Accessoire", "sousCategorie": "Bracelet de montre", "piece": "Bracelet de montre en cuir nubuk brun", "marque": "Corropelle", "couleur": "Marron", "statut": "Neuf", "taille": "", "prix": 21.99, "date": "15 juin 2026", "image": "", "commentaire": "", "quantite": 1}, {"id": "66424-6511-061", "categorie": "Accessoire", "sousCategorie": "Bracelet de montre", "piece": "Bracelet de montre en caoutchouc orange", "marque": "Niziruoup", "couleur": "Orange", "statut": "Neuf", "taille": "", "prix": 21.99, "date": "15 juin 2026", "image": "", "commentaire": "", "quantite": 1}, {"id": "66437-1711-056", "categorie": "Accessoire", "sousCategorie": "Bracelet de montre", "piece": "Bracelet de montre à maillons en titane - Akrone", "marque": "Akrone", "couleur": "Argent", "statut": "Bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "66443-1111-056", "categorie": "Accessoire", "sousCategorie": "Bracelet de montre", "piece": "Bracelet de montre parachutiste noir - Akrone", "marque": "Akrone", "couleur": "Noir", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "66444-4528-999", "categorie": "Accessoire", "sousCategorie": "Bracelet de montre", "piece": "Bracelet de montre style Nato kaki avec liseré jaune", "marque": "", "couleur": "Jaune / Vert", "statut": "Non renseigné", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "67125-1811-025", "categorie": "Accessoire", "sousCategorie": "Lunettes", "piece": "Lunettes de vue monture dorée", "marque": "Level", "couleur": "Jaune", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "67135-1111-999", "categorie": "Accessoire", "sousCategorie": "Lunettes", "piece": "Lunettes de vue noires", "marque": "Atol", "couleur": "Noir", "statut": "À réparer", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "67235-3211-999", "categorie": "Accessoire", "sousCategorie": "Lunettes", "piece": "Lunettes de Soleil de vue", "marque": "Montana Eyewear", "couleur": "Marron", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "69105-1311-005", "categorie": "Accessoire", "sousCategorie": "Pochette", "piece": "Pochette en Chambray Ecru Coton et Lin - Bexley", "marque": "Bexley", "couleur": "Beige", "statut": "Très bon", "taille": "", "prix": 26.5, "date": "1 avril 2026", "image": "https://www.bexley.fr/media/catalog/product/cache/906ae4fa6fb3024c53a8cefa99b208d4/0/1/019250ct-pochette_coton_lin_ecru_1.jpg", "commentaire": "", "quantite": 1}, {"id": "69131-2142-020", "categorie": "Accessoire", "sousCategorie": "Carré de poche", "piece": "Carré de poche bleu clair", "marque": "Hugo Boss", "couleur": "Bleu", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "72342-9999-060", "categorie": "Cosmétique", "sousCategorie": "Soin", "piece": "Ecran Solaire Visage et Corps SPF50+ - Horace", "marque": "Horace", "couleur": "", "statut": "Neuf", "taille": "", "prix": 19.0, "date": "3 juin 2026", "image": "", "commentaire": "", "quantite": 1}, {"id": "73136-9999-001", "categorie": "Cosmétique", "sousCategorie": "Parfum", "piece": "Parfum - Lacoste", "marque": "Lacoste", "couleur": "", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "73136-9999-026", "categorie": "Cosmétique", "sousCategorie": "Parfum", "piece": "Parfum Bleu - Chanel", "marque": "Chanel", "couleur": "", "statut": "Très bon", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "73136-9999-027", "categorie": "Cosmétique", "sousCategorie": "Parfum", "piece": "Parfum Gentleman - Givenchy", "marque": "Givenchy", "couleur": "", "statut": "Hors d'usage", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "", "quantite": 1}, {"id": "73136-9999-060", "categorie": "Cosmétique", "sousCategorie": "Parfum", "piece": "Parfum Ibiza 87 - Horace", "marque": "Horace", "couleur": "", "statut": "Souhaité", "taille": "", "prix": null, "date": "", "image": "", "commentaire": "Odeur forte, boisée, type encens. Parfum qui fait adulte, idéal pour des soirées sérieuses.", "quantite": 1}, {"id": "74142-9999-060", "categorie": "Cosmétique", "sousCategorie": "Soin", "piece": "Nettoyant Visage Purifiant - Horace", "marque": "Horace", "couleur": "", "statut": "Neuf", "taille": "", "prix": 13.0, "date": "3 juin 2026", "image": "", "commentaire": "", "quantite": 1}, {"id": "74242-9999-060", "categorie": "Cosmétique", "sousCategorie": "Soin", "piece": "Hydratant Visage Matifiant - Horace", "marque": "Horace", "couleur": "", "statut": "Neuf", "taille": "", "prix": 15.0, "date": "3 juin 2026", "image": "", "commentaire": "", "quantite": 1}];
+ 
+  const GROUP_ORDER = ["Haut", "Bas", "Veste & Manteau", "Chaussures", "Sous-vêtement", "Accessoire", "Cosmétique"];
+ 
+  const root = document.getElementById('gallery-root');
+  const overlay = document.getElementById('overlay');
+  const modalContent = document.getElementById('modal-content');
+ 
+  function initial(str){ return str.trim().charAt(0).toUpperCase(); }
+  function isImageUrl(url){ return /\.(jpe?g|png|webp|gif)(\?|$)/i.test(url); }
+  function formatPrice(n){ return n.toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' €'; }
+ 
+  function statusClass(statut){
+    if (statut === 'Souhaité') return 'badge-wish';
+    if (statut === 'Neuf' || statut === 'Très bon' || statut === 'Bon') return 'badge-ok';
+    if (statut === 'Correct') return 'badge-none';
+    if (statut === 'Usé' || statut === 'À réparer' || statut === "Hors d'usage") return 'badge-warn';
+    return 'badge-none';
+  }
+ 
+  function renderStats(){
+    const owned = ITEMS.filter(i => i.statut !== 'Souhaité');
+    const wished = ITEMS.filter(i => i.statut === 'Souhaité');
+    const ownedCount = owned.reduce((s,i) => s + i.quantite, 0);
+    const wishedCount = wished.reduce((s,i) => s + i.quantite, 0);
+    const knownValue = owned.filter(i => i.prix != null).reduce((s,i) => s + i.prix * i.quantite, 0);
+    document.getElementById('stat-total').textContent = ownedCount;
+    document.getElementById('stat-wish').textContent = wishedCount;
+    document.getElementById('stat-value').textContent = formatPrice(knownValue);
+  }
+ 
+  function renderGallery(){
+    GROUP_ORDER.forEach(cat => {
+      const items = ITEMS.filter(i => i.categorie === cat);
+      if (!items.length) return;
+ 
+      const group = document.createElement('section');
+      group.className = 'group';
+      group.dataset.cat = cat;
+ 
+      const head = document.createElement('div');
+      head.className = 'group-head';
+      head.innerHTML = '<h2>' + cat + '</h2><span class="count">' + items.length + '</span>';
+      group.appendChild(head);
+ 
+      const grid = document.createElement('div');
+      grid.className = 'gallery';
+ 
+      items.forEach(it => {
+        const card = document.createElement('article');
+        card.className = 'card' + (it.statut === 'Souhaité' ? ' wished' : '');
+        card.addEventListener('click', () => openModal(it.id));
+ 
+        const badge = document.createElement('span');
+        badge.className = 'card-badge ' + statusClass(it.statut);
+        badge.textContent = it.statut;
+        card.appendChild(badge);
+ 
+        if (it.quantite > 1) {
+          const qty = document.createElement('span');
+          qty.className = 'card-qty';
+          qty.textContent = '×' + it.quantite;
+          card.appendChild(qty);
+        }
+ 
+        if (it.image && isImageUrl(it.image)) {
+          const img = document.createElement('img');
+          img.className = 'card-cover';
+          img.src = it.image;
+          img.alt = it.piece;
+          img.onerror = function(){ this.replaceWith(Object.assign(document.createElement('div'), {className: 'card-cover', textContent: initial(it.piece)})); };
+          card.appendChild(img);
+        } else {
+          const ph = document.createElement('div');
+          ph.className = 'card-cover';
+          ph.textContent = initial(it.piece);
+          card.appendChild(ph);
+        }
+ 
+        const body = document.createElement('div');
+        body.className = 'card-body';
+        body.innerHTML =
+          '<p class="card-tag">' + it.sousCategorie + '</p>' +
+          '<h3 class="card-title">' + it.piece + '</h3>' +
+          '<p class="card-sub">' + (it.marque || '—') + (it.couleur ? ' · ' + it.couleur : '') + '</p>';
+        card.appendChild(body);
+ 
+        grid.appendChild(card);
+      });
+ 
+      group.appendChild(grid);
+      root.appendChild(group);
+    });
+  }
+ 
+  function openModal(id){
+    const it = ITEMS.find(x => x.id === id);
+    if (!it) return;
+ 
+    let html = (it.image && isImageUrl(it.image))
+      ? '<img class="modal-cover" src="' + it.image + '" alt="' + it.piece + '" onerror="this.outerHTML=\'<div class=&quot;modal-cover&quot;>' + initial(it.piece) + '</div>\'">'
+      : '<div class="modal-cover">' + initial(it.piece) + '</div>';
+    html += '<div class="modal-body">';
+    html += '<p class="modal-breadcrumb">' + it.categorie + ' — ' + it.sousCategorie + '</p>';
+    html += '<h2 class="modal-title">' + it.piece + (it.quantite > 1 ? ' <span style="color:var(--muted); font-style:italic; font-size:1rem;">(×' + it.quantite + ')</span>' : '') + '</h2>';
+    html += '<span class="modal-badge ' + statusClass(it.statut) + '">' + it.statut + '</span>';
+    html += '<dl class="modal-specs">';
+    html += '<dt>Marque</dt><dd>' + (it.marque || '—') + '</dd>';
+    if (it.couleur) html += '<dt>Couleur</dt><dd>' + it.couleur + '</dd>';
+    if (it.taille) html += '<dt>Taille</dt><dd>' + it.taille + '</dd>';
+    if (it.date) html += '<dt>Acquis</dt><dd>' + it.date + '</dd>';
+    html += '</dl>';
+    if (it.prix != null) html += '<p class="modal-price">' + formatPrice(it.prix) + '</p>';
+    if (it.commentaire) html += '<p class="modal-comment">' + it.commentaire + '</p>';
+    if (it.image && !isImageUrl(it.image)) {
+      html += '<a class="modal-link" href="' + it.image + '" target="_blank" rel="noopener">Voir la fiche produit ↗</a>';
+    }
+    html += '</div>';
+ 
+    modalContent.innerHTML = html;
+    overlay.classList.add('open');
+  }
+ 
+  function closeModal(){ overlay.classList.remove('open'); }
+ 
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+ 
+  renderStats();
+  renderGallery();
+</script>
+ 
+</body>
+</html>
