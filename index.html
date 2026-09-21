@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panache</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14120F;
+    --panel: #1C1A16;
+    --ink: #EDE6D8;
+    --ink-soft: #C7BBA3;
+    --gold: #C4A15C;
+    --gold-bright: #E3C687;
+    --muted: #877C67;
+    --rule: rgba(196,161,92,0.28);
+    --dim: #55503F;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Work Sans', sans-serif;
+  }
+ 
+  *{ box-sizing: border-box; }
+ 
+  html,body{
+    margin:0;
+    padding:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+ 
+  body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem);
+  }
+ 
+  a{ color: inherit; }
+ 
+  .card{
+    width: 100%;
+    max-width: 720px;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    padding: clamp(2.2rem, 5vw, 3.5rem);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: rise 0.7s ease forwards;
+  }
+ 
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+ 
+  @media (prefers-reduced-motion: reduce){
+    .card{ animation:none; opacity:1; transform:none; }
+  }
+ 
+  .emblem{
+    width: 46px;
+    height: 46px;
+    margin: 0 auto 1.4rem;
+    color: var(--gold);
+    display:block;
+  }
+ 
+  header{ text-align:center; }
+ 
+  .eyebrow{
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin: 0 0 0.6rem;
+  }
+ 
+  h1{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.6rem, 6vw, 3.6rem);
+    margin: 0 0 0.9rem;
+    color: var(--ink);
+  }
+ 
+  .lede{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 40ch;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+ 
+  .menu{
+    margin-top: clamp(2.4rem, 5vw, 3.2rem);
+    border-top: 1px solid var(--rule);
+  }
+ 
+  .course{
+    padding: 1.7rem 0;
+    border-bottom: 1px solid var(--rule);
+    display:flex;
+    gap: 1.3rem;
+    align-items: flex-start;
+  }
+ 
+  .course-num{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--dim);
+    padding-top: 0.3rem;
+    flex-shrink:0;
+    width: 2.2rem;
+  }
+ 
+  .course-icon{
+    width: 28px;
+    height: 28px;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+ 
+  .course-body{ flex:1; min-width:0; }
+ 
+  .course h2{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.6rem;
+    margin: 0 0 0.35rem;
+    color: var(--ink);
+  }
+ 
+  .course p{
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0 0 0.9rem;
+    max-width: 46ch;
+  }
+ 
+  a.open{
+    display:inline-flex;
+    align-items:center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--gold-bright);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+    transition: border-color 0.2s ease;
+  }
+  a.open:hover, a.open:focus{ border-bottom-color: var(--gold-bright); }
+ 
+  footer.colophon{
+    margin-top: 1.8rem;
+    text-align:center;
+    font-size: 0.78rem;
+    color: var(--dim);
+  }
+</style>
+</head>
+<body>
+ 
+<div class="card">
+  <header>
+    <svg class="emblem" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M36 6 C24 10 14 20 10 34 C9 37.5 9.5 40 10.5 41.5"/>
+      <path d="M35 7.5 C24.5 12 16 21 12 33"/>
+      <path d="M31 11 L22 16 M29 15.5 L20.5 20 M27 20 L19 24 M25 24.5 L17.5 28 M23 29 L16 32"/>
+      <path d="M10.5 41.5 L15 37"/>
+    </svg>
+    <p class="eyebrow">Garde-robe, style et pièces choisies</p>
+    <h1>Panache</h1>
+    <p class="lede">Ce qu'on porte, ce qu'on convoite, ce qu'on assume.</p>
+  </header>
+ 
+  <div class="menu">
+ 
+    <div class="course">
+      <span class="course-num">I</span>
+      <svg class="course-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M24 6 C21 6 19 8 19 10 L14 13 L6 18 L10 26 L16 22 L16 40 L32 40 L32 22 L38 26 L42 18 L34 13 L29 10 C29 8 27 6 24 6 Z"/>
+      </svg>
+      <div class="course-body">
+        <h2>Garde-robe</h2>
+        <p>Une galerie de toutes mes pièces, rangées par catégorie.</p>
+        <a class="open" href="panache-garderobe.html">Ouvrir la garde-robe</a>
+      </div>
+    </div>
+ 
+    <div class="course">
+      <span class="course-num">II</span>
+      <svg class="course-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M24 40 C24 40 8 30 8 18.5 C8 12.5 12.5 8.5 18 8.5 C21 8.5 23 10 24 12 C25 10 27 8.5 30 8.5 C35.5 8.5 40 12.5 40 18.5 C40 30 24 40 24 40 Z"/>
+      </svg>
+      <div class="course-body">
+        <h2>Wishlist</h2>
+        <p>Les pièces convoitées, en attente d'un bon prétexte.</p>
+        <a class="open" href="panache-wishlist.html">Ouvrir la wishlist</a>
+      </div>
+    </div>
+ 
+    <div class="course">
+      <span class="course-num">III</span>
+      <svg class="course-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="14" r="5"/>
+        <path d="M8 40 L8 32 C8 27 12.5 24 18 24 C21 24 23.5 25 25.5 27"/>
+        <path d="M30 40 L30 30 L40 22 L40 40 M30 30 L26 26"/>
+      </svg>
+      <div class="course-body">
+        <h2>Looks</h2>
+        <p>Des tenues assemblées, pièce par pièce.</p>
+        <a class="open" href="panache-looks.html">Ouvrir les looks</a>
+      </div>
+    </div>
+ 
+  </div>
+ 
+  <footer class="colophon">Une facette de l'Atlas des facettes.</footer>
+</div>
+ 
+</body>
+</html>
