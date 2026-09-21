@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tenues — Panache</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14120F;
+    --panel: #1C1A16;
+    --panel-raised: #262319;
+    --ink: #EDE6D8;
+    --ink-soft: #D2C6AE;
+    --gold: #C4A15C;
+    --gold-bright: #E3C687;
+    --muted: #877C67;
+    --rule: rgba(196,161,92,0.28);
+    --dim: #55503F;
+    --sage: #7E9C6E;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Work Sans', sans-serif;
+  }
+ 
+  *{ box-sizing: border-box; }
+ 
+  html,body{
+    margin:0;
+    padding:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+ 
+  body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem);
+  }
+ 
+  a{ color: inherit; }
+ 
+  .page{ width: 100%; max-width: 1120px; }
+ 
+  header.masthead{
+    text-align:center;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+  }
+  .kicker{
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin: 0 0 0.6rem;
+  }
+  .kicker a{ text-decoration: none; border-bottom: 1px solid rgba(135,124,103,0.4); }
+  .kicker a:hover{ color: var(--gold-bright); border-bottom-color: var(--gold-bright); }
+  h1{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.2rem, 5.2vw, 3.1rem);
+    margin: 0 0 0.9rem;
+  }
+  .lede{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 52ch;
+    margin: 0 auto;
+    line-height: 1.55;
+  }
+ 
+  .layout{
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2rem;
+    margin-top: 2.4rem;
+    align-items: start;
+  }
+  @media (max-width: 760px){ .layout{ grid-template-columns: 1fr; } }
+ 
+  .outfit-list{
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    padding: 0.4rem 0;
+  }
+  .outfit-list h2{
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+    padding: 0.9rem 1.1rem 0.6rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .outfit-item{
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    border-left: 2px solid transparent;
+    color: var(--ink-soft);
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    padding: 0.75rem 1.1rem;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .outfit-item:hover{ background: var(--panel-raised); color: var(--ink); }
+  .outfit-item.active{
+    border-left-color: var(--gold);
+    color: var(--gold-bright);
+    background: var(--panel-raised);
+  }
+ 
+  .stage{
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 2rem;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    padding: 1.8rem;
+  }
+  @media (max-width: 640px){ .stage{ grid-template-columns: 1fr; } }
+ 
+  .mannequin-wrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .mannequin-wrap svg{ width: 100%; max-width: 220px; height: auto; }
+  .mannequin-caption{
+    margin-top: 0.8rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--ink);
+    text-align: center;
+  }
+ 
+  .pieces-panel h3{
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 0.9rem;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.5rem;
+  }
+  .piece-row{
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .piece-row:last-child{ border-bottom: none; }
+  .piece-swatch{
+    width: 16px; height: 16px;
+    border-radius: 3px;
+    border: 1px solid rgba(237,230,216,0.25);
+    flex-shrink: 0;
+  }
+  .piece-cat{
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--sage);
+    width: 5.4rem;
+    flex-shrink: 0;
+  }
+  .piece-name{ font-size: 0.92rem; color: var(--ink); flex: 1; }
+  .piece-marque{ font-size: 0.78rem; font-style: italic; color: var(--muted); }
+ 
+  .empty-hint{
+    color: var(--dim);
+    font-style: italic;
+    font-size: 0.95rem;
+    padding: 1rem 0;
+  }
+ 
+  footer.colophon{
+    margin-top: 3rem;
+    text-align:center;
+    font-size: 0.78rem;
+    color: var(--dim);
+  }
+</style>
+</head>
+<body>
+ 
+<div class="page">
+  <header class="masthead">
+    <p class="kicker"><a href="panache.html">Panache</a> — garde-robe, style et pièces choisies</p>
+    <h1>Tenues</h1>
+    <p class="lede">Des tenues assemblées, pièce par pièce. Choisissez-en une pour l'habiller sur le mannequin.</p>
+  </header>
+ 
+  <div class="layout">
+    <nav class="outfit-list" id="outfit-list">
+      <h2>Tenues</h2>
+    </nav>
+ 
+    <div class="stage">
+      <div class="mannequin-wrap">
+        <svg id="mannequin" viewBox="0 0 220 420" xmlns="http://www.w3.org/2000/svg">
+          <!-- Silhouette neutre, toujours visible -->
+          <g stroke="var(--rule)" stroke-width="2" fill="none">
+            <circle cx="110" cy="46" r="28"/>
+            <path d="M62,90 L158,90 L148,205 L72,205 Z"/>
+            <rect x="48" y="93" width="16" height="108" rx="6"/>
+            <rect x="156" y="93" width="16" height="108" rx="6"/>
+            <rect x="75" y="205" width="26" height="172" rx="6"/>
+            <rect x="119" y="205" width="26" height="172" rx="6"/>
+            <ellipse cx="88" cy="392" rx="21" ry="9"/>
+            <ellipse cx="132" cy="392" rx="21" ry="9"/>
+          </g>
+ 
+          <!-- Emplacements habillables : masqués par défaut, colorés/affichés en JS -->
+          <g id="shape-bottom-long" style="display:none">
+            <rect x="73" y="203" width="30" height="174" rx="6"/>
+            <rect x="117" y="203" width="30" height="174" rx="6"/>
+          </g>
+          <g id="shape-bottom-short" style="display:none">
+            <rect x="73" y="203" width="30" height="80" rx="6"/>
+            <rect x="117" y="203" width="30" height="80" rx="6"/>
+          </g>
+ 
+          <g id="shape-shoes" style="display:none">
+            <ellipse cx="88" cy="393" rx="24" ry="11"/>
+            <ellipse cx="132" cy="393" rx="24" ry="11"/>
+          </g>
+ 
+          <path id="shape-top" d="M60,88 L160,88 L150,207 L70,207 Z M46,91 L64,91 L64,199 L46,199 Z M156,91 L174,91 L174,199 L156,199 Z" style="display:none"/>
+ 
+          <path id="shape-outer" d="M54,84 L166,84 L154,213 L66,213 Z M40,88 L60,88 L60,205 L40,205 Z M160,88 L180,88 L180,205 L160,205 Z M110,90 L110,210" stroke="rgba(0,0,0,0.25)" stroke-width="2" style="display:none"/>
+ 
+          <rect id="shape-belt" x="68" y="199" width="84" height="10" rx="2" style="display:none"/>
+ 
+          <circle id="shape-watch" cx="164" cy="178" r="7" style="display:none"/>
+ 
+          <g id="shape-hat-casquette" style="display:none">
+            <path d="M82,26 A28,28 0 0 1 138,26 L138,40 L82,40 Z"/>
+            <path d="M136,34 L156,38 L136,42 Z"/>
+          </g>
+          <path id="shape-hat-bonnet" d="M80,32 A30,30 0 0 1 140,32 L140,48 L80,48 Z" style="display:none"/>
+ 
+          <rect id="shape-glasses" x="88" y="42" width="44" height="7" rx="3" fill="#1a1a1a" style="display:none"/>
+ 
+          <path id="shape-neck-cravate" d="M104,78 L116,78 L120,88 L110,220 L100,88 Z" style="display:none"/>
+          <path id="shape-neck-echarpe" d="M88,76 Q110,92 132,76 L132,90 Q110,104 88,90 Z M96,90 L92,150 L102,150 L104,92 Z" style="display:none"/>
+ 
+          <rect id="shape-bag" x="26" y="180" width="34" height="42" rx="6" style="display:none"/>
+        </svg>
+        <p class="mannequin-caption" id="mannequin-caption">Choisissez une tenue</p>
+      </div>
+ 
+      <div class="pieces-panel">
+        <h3>Pièces de la tenue</h3>
+        <div id="pieces-list"><p class="empty-hint">Aucune tenue sélectionnée pour l'instant.</p></div>
+      </div>
+    </div>
+  </div>
+ 
+  <footer class="colophon">Une facette de l'Atlas des facettes.</footer>
+</div>
+ 
+<script>
+  // Sous-ensemble de la garde-robe utilisé par les tenues ci-dessous.
+  const PIECES = {
+    "13301-1211-003": { piece: "Chemise blanche", categorie: "Haut", sousCategorie: "Chemise", couleur: "Blanc", marque: "Burton" },
+    "31108-2611-005": { piece: "Pantalon de costume ajusté bleu marine", categorie: "Bas", sousCategorie: "Pantalon de costume", couleur: "Bleu", marque: "Bexley" },
+    "41115-3311-003": { piece: "Richelieu en cuir cognac", categorie: "Chaussures", sousCategorie: "Richelieu", couleur: "Marron", marque: "Burton" },
+    "63115-3311-003": { piece: "Ceinture large en cuir cognac", categorie: "Accessoire", sousCategorie: "Ceinture", couleur: "Marron", marque: "Burton" },
+    "66125-1715-014": { piece: "Montre Lip Himalaya Squelette", categorie: "Accessoire", sousCategorie: "Montre", couleur: "Marron", marque: "Lip" },
+    "61331-2141-003": { piece: "Cravate en soie bleu clair à motif", categorie: "Accessoire", sousCategorie: "Cravate", couleur: "Bleu", marque: "Burton" },
+ 
+    "11101-1211-006": { piece: "T-shirt blanc", categorie: "Haut", sousCategorie: "T-shirt", couleur: "Blanc", marque: "Uniqlo" },
+    "32101-3511-004": { piece: "Pantalon chino marron", categorie: "Bas", sousCategorie: "Pantalon", couleur: "Marron", marque: "Devred" },
+    "42417-3111-004": { piece: "Mocassins à picots en cuir daim beige", categorie: "Chaussures", sousCategorie: "Mocassins", couleur: "Beige", marque: "Devred" },
+    "62201-2112-999": { piece: "Casquette bleu clair JO Paris 2024", categorie: "Accessoire", sousCategorie: "Casquette", couleur: "Bleu", marque: "" },
+    "65127-1941-015": { piece: "Bracelet Maillon - Hune", categorie: "Accessoire", sousCategorie: "Bracelet", couleur: "Argent", marque: "Le Vent à la Française" },
+ 
+    "13705-5111-004": { piece: "Chemise en lin rose", categorie: "Haut", sousCategorie: "Chemise", couleur: "Rose", marque: "Devred" },
+    "36205-6411-013": { piece: "Short en lin ocre", categorie: "Bas", sousCategorie: "Short", couleur: "Jaune", marque: "Galeries Lafayette" },
+    "45117-3311-01002": { piece: "Espadrilles en cuir beige", categorie: "Chaussures", sousCategorie: "Espadrilles", couleur: "Marron", marque: "Monoprix" },
+    "67235-3211-999": { piece: "Lunettes de soleil", categorie: "Accessoire", sousCategorie: "Lunettes", couleur: "Marron", marque: "Montana Eyewear" },
+    "66137-1111-056": { piece: "Montre Akrone C-03 Alat", categorie: "Accessoire", sousCategorie: "Montre", couleur: "Argent", marque: "Akrone" },
+ 
+    "16201-1154-023": { piece: "Pull sweat Tengu", categorie: "Haut", sousCategorie: "Pull", couleur: "Jaune", marque: "Yoko" },
+    "33201-2611-010": { piece: "Pantalon fatigue bleu foncé", categorie: "Bas", sousCategorie: "Pantalon", couleur: "Bleu", marque: "Monoprix" },
+    "44115-1211-005": { piece: "Sneakers en cuir blanc", categorie: "Chaussures", sousCategorie: "Sneakers", couleur: "Blanc", marque: "Bexley" },
+    "64119-4511-006": { piece: "Sac banane bandoulière vert", categorie: "Accessoire", sousCategorie: "Sac", couleur: "Vert", marque: "Uniqlo" },
+    "62108-4711-01803": { piece: "Bonnet vert foncé", categorie: "Accessoire", sousCategorie: "Bonnet", couleur: "Vert", marque: "Solognac" },
+ 
+    "15508-2611-007": { piece: "Pull col roulé fin marine", categorie: "Haut", sousCategorie: "Pull", couleur: "Bleu", marque: "Zara" },
+    "34107-2614-010": { piece: "Pantalon jean brut", categorie: "Bas", sousCategorie: "Pantalon", couleur: "Bleu", marque: "Monoprix" },
+    "43115-1111-005": { piece: "Chelsea boots en cuir noir", categorie: "Chaussures", sousCategorie: "Chelsea boots", couleur: "Noir", marque: "Bexley" },
+    "23108-1632-003": { piece: "Manteau gris", categorie: "Veste & Manteau", sousCategorie: "Manteau", couleur: "Gris", marque: "Burton" },
+    "61108-2611-003": { piece: "Écharpe bleue", categorie: "Accessoire", sousCategorie: "Écharpe", couleur: "Bleu", marque: "Burton" },
+ 
+    "11403-3111-006": { piece: "T-shirt manche longue beige", categorie: "Haut", sousCategorie: "T-shirt", couleur: "Beige", marque: "Uniqlo" },
+    "33101-4511-01801": { piece: "Pantalon cargo vert kaki", categorie: "Bas", sousCategorie: "Pantalon", couleur: "Vert", marque: "Forclaz" },
+    "24220-4611-01801": { piece: "Doudoune verte", categorie: "Veste & Manteau", sousCategorie: "Doudoune", couleur: "Vert", marque: "Forclaz" },
+    "43217-3211-999": { piece: "Chukka en daim marron", categorie: "Chaussures", sousCategorie: "Chukka", couleur: "Marron", marque: "" },
+    "63301-4611-01801": { piece: "Ceinture de rando verte", categorie: "Accessoire", sousCategorie: "Ceinture", couleur: "Vert", marque: "Forclaz" }
+  };
+ 
+  const OUTFITS = [
+    { id: "bureau", nom: "Semaine au bureau", pieces: ["13301-1211-003","31108-2611-005","41115-3311-003","63115-3311-003","66125-1715-014","61331-2141-003"] },
+    { id: "weekend", nom: "Week-end décontracté", pieces: ["11101-1211-006","32101-3511-004","42417-3111-004","62201-2112-999","65127-1941-015"] },
+    { id: "ete", nom: "Sortie d'été", pieces: ["13705-5111-004","36205-6411-013","45117-3311-01002","67235-3211-999","66137-1111-056"] },
+    { id: "street", nom: "Look streetwear", pieces: ["16201-1154-023","33201-2611-010","44115-1211-005","64119-4511-006","62108-4711-01803"] },
+    { id: "pluie", nom: "Journée pluvieuse", pieces: ["15508-2611-007","34107-2614-010","43115-1111-005","23108-1632-003","61108-2611-003"] },
+    { id: "rando", nom: "Randonnée", pieces: ["11403-3111-006","33101-4511-01801","24220-4611-01801","43217-3211-999","63301-4611-01801"] }
+  ];
+ 
+  const COLOR_MAP = {
+    "Noir": "#2a2620", "Blanc": "#efe7d6", "Bleu": "#3b5a86", "Vert": "#4e7a5b",
+    "Rouge": "#8c3b35", "Marron": "#7a5636", "Beige": "#cdb98f", "Gris": "#8f8a7d",
+    "Rose": "#cf93a4", "Jaune": "#cda63f", "Orange": "#c1743f", "Violet": "#6f5580",
+    "Argent": "#b7b3a7", "Or": "#c9a15c", "Bronze": "#8a6a3f"
+  };
+  function colorFor(couleur){
+    const first = (couleur || "").split("/")[0].trim();
+    return COLOR_MAP[first] || "#9a8f78";
+  }
+ 
+  // Regroupement sous-catégorie -> emplacement sur le mannequin
+  const SLOT_OF = {
+    "T-shirt": "top", "Chemise": "top", "Pull": "top", "Polo": "top",
+    "Veste": "outer", "Veste de costume": "outer", "Veste de travail": "outer",
+    "Manteau": "outer", "Doudoune": "outer", "Bomber": "outer", "Blouson": "outer",
+    "Pantalon": "bottom-long", "Pantalon de costume": "bottom-long", "Short": "bottom-short",
+    "Richelieu": "shoes", "Derbies": "shoes", "Mocassins": "shoes", "Chelsea boots": "shoes",
+    "Chukka": "shoes", "Sneakers": "shoes", "Espadrilles": "shoes",
+    "Ceinture": "belt", "Montre": "watch", "Bracelet": "watch", "Bracelet de montre": "watch",
+    "Casquette": "hat-casquette", "Bonnet": "hat-bonnet",
+    "Lunettes": "glasses",
+    "Cravate": "neck-cravate", "Écharpe": "neck-echarpe",
+    "Sac": "bag"
+  };
+ 
+  const ALL_SHAPE_IDS = [
+    "shape-top","shape-outer","shape-bottom-long","shape-bottom-short","shape-shoes",
+    "shape-belt","shape-watch","shape-hat-casquette","shape-hat-bonnet","shape-glasses",
+    "shape-neck-cravate","shape-neck-echarpe","shape-bag"
+  ];
+ 
+  function resetMannequin(){
+    ALL_SHAPE_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      el.style.display = "none";
+      if (!id.startsWith("shape-outer") && !id.startsWith("shape-glasses")) el.removeAttribute("fill");
+    });
+  }
+ 
+  function dressMannequin(outfit){
+    resetMannequin();
+    outfit.pieces.forEach(pid => {
+      const p = PIECES[pid];
+      if (!p) return;
+      const slot = SLOT_OF[p.sousCategorie];
+      if (!slot) return;
+      const el = document.getElementById("shape-" + slot);
+      if (!el) return;
+      el.style.display = "";
+      const color = colorFor(p.couleur);
+      if (slot === "outer") {
+        el.setAttribute("fill", color);
+      } else if (slot !== "glasses") {
+        el.setAttribute("fill", color);
+      }
+    });
+  }
+ 
+  function renderPiecesList(outfit){
+    const list = document.getElementById("pieces-list");
+    const catOrder = ["Haut","Veste & Manteau","Bas","Chaussures","Accessoire"];
+    const rows = outfit.pieces
+      .map(pid => PIECES[pid])
+      .filter(Boolean)
+      .sort((a,b) => catOrder.indexOf(a.categorie) - catOrder.indexOf(b.categorie));
+ 
+    list.innerHTML = rows.map(p => (
+      '<div class="piece-row">' +
+        '<span class="piece-swatch" style="background:' + colorFor(p.couleur) + '"></span>' +
+        '<span class="piece-cat">' + p.sousCategorie + '</span>' +
+        '<span class="piece-name">' + p.piece + '</span>' +
+        (p.marque ? '<span class="piece-marque">' + p.marque + '</span>' : '') +
+      '</div>'
+    )).join('');
+  }
+ 
+  function selectOutfit(outfit, btn){
+    document.querySelectorAll('.outfit-item').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    dressMannequin(outfit);
+    renderPiecesList(outfit);
+    document.getElementById('mannequin-caption').textContent = outfit.nom;
+  }
+ 
+  const listEl = document.getElementById('outfit-list');
+  OUTFITS.forEach(outfit => {
+    const btn = document.createElement('button');
+    btn.className = 'outfit-item';
+    btn.textContent = outfit.nom;
+    btn.addEventListener('click', () => selectOutfit(outfit, btn));
+    listEl.appendChild(btn);
+  });
+ 
+  // Ouvre la première tenue par défaut
+  selectOutfit(OUTFITS[0], listEl.querySelector('.outfit-item'));
+</script>
+ 
+</body>
+</html>
